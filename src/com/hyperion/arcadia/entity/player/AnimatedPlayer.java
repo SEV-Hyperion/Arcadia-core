@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -31,8 +32,8 @@ public class AnimatedPlayer extends Entity {
 
 	private final int CHARACTER_SPEED = 250;
 	private long lastFire;
-	private static final Vector2 DIRECCION_DERECHA = new Vector2(0, 5);
-	private static final Vector2 DIRECCION_IZQUIERDA = new Vector2(0, -5);
+	private static final Vector2 DIRECCION_DERECHA = new Vector2(5, 0);
+	private static final Vector2 DIRECCION_IZQUIERDA = new Vector2(-5, 0);
 	private Vector2 direccionProyectil = DIRECCION_DERECHA;
 
 	/**
@@ -64,6 +65,7 @@ public class AnimatedPlayer extends Entity {
 	private Touchpad touchpad;
 	private Button bt;
 	private Sound hit;
+	private Button bt2;
 
 	/**
 	 * Constructor de AnimatedPlayer (personajes animado).
@@ -109,25 +111,35 @@ public class AnimatedPlayer extends Entity {
 		touchpad = new CustomTouchpad();
 
 		// TODO extract the button ala touchpad
-		// bt = new CustomButton();
 		bt = new Button();
-		bt.setColor(Color.OLIVE);
 		Skin btSkin = new Skin();
-		String up = "up";
-		String down = "down";
-		btSkin.add(up, TextureManager.instance.atlas.findRegion("buttonUp")
-				.getTexture());
-		btSkin.add(down, TextureManager.instance.atlas.findRegion("buttonDown")
-				.getTexture());
-		ButtonStyle bs = new ButtonStyle(btSkin.getDrawable(up),
-				btSkin.getDrawable(down), btSkin.getDrawable(up));
+		TextureAtlas atlas = new TextureAtlas();
+		atlas.addRegion("botonFuego",
+				TextureManager.instance.atlas.findRegion("botonFuego"));
+		atlas.addRegion("botonRayo",
+				TextureManager.instance.atlas.findRegion("botonRayo"));
+
+		btSkin.addRegions(atlas);
+		ButtonStyle bs = new ButtonStyle(btSkin.getDrawable("botonFuego"),
+				btSkin.getDrawable("botonFuego"),
+				btSkin.getDrawable("botonFuego"));
 		bt.setPosition(250, 50);
-		// bt.setSkin(btSkin);
 		bt.setStyle(bs);
-		bt.setSize(50f, 50f);
+		bt.setSize(66f, 32f);
+
+		// second button
+		// TODO remove duplicities here
+		bt2 = new Button();
+		ButtonStyle bs2 = new ButtonStyle(btSkin.getDrawable("botonRayo"),
+				btSkin.getDrawable("botonRayo"),
+				btSkin.getDrawable("botonRayo"));
+		bt2.setPosition(350, 50);
+		bt2.setStyle(bs2);
+		bt2.setSize(39f, 29f);
 
 		EntityManager.em.addActor(touchpad);
 		EntityManager.em.addActor(bt);
+		EntityManager.em.addActor(bt2);
 		Gdx.input.setInputProcessor(EntityManager.em);
 	}
 
@@ -150,7 +162,7 @@ public class AnimatedPlayer extends Entity {
 		}
 
 		if (touchpad.getKnobPercentY() < 0) {
-			// face down
+			// face down/¿left?
 			currentFrame = playerDownAnimation.getKeyFrame(stateTime, true);
 		}
 		if (touchpad.getKnobPercentY() > 0) {
@@ -168,9 +180,10 @@ public class AnimatedPlayer extends Entity {
 			}
 		}
 
+		// TODO replace by events for respecting buttons
 		setProyectileDireccion();
 
-		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+		if (Gdx.input.isKeyPressed(Keys.SPACE) || bt2.isPressed()) {
 			// disparo principal.
 			// lose ammo on fire.
 			disparoPrincipal();
@@ -246,11 +259,13 @@ public class AnimatedPlayer extends Entity {
 	}
 
 	private void setProyectileDireccion() {
-		if (touchpad.getKnobPercentY() < 0) {
+		// el unico cambio aqui es Y por X. ahora se dispara a derecha e
+		// izquierda.(Más acorde al diseño del juego)
+		if (touchpad.getKnobPercentX() < 0) {
 			direccionProyectil = DIRECCION_IZQUIERDA;
 		}
 
-		if (touchpad.getKnobPercentY() > 0) {
+		if (touchpad.getKnobPercentX() > 0) {
 			direccionProyectil = DIRECCION_DERECHA;
 		}
 	}
@@ -261,8 +276,9 @@ public class AnimatedPlayer extends Entity {
 	public void render(SpriteBatch sb) {
 		sb.draw(currentFrame, pos.x, pos.y);
 
-		touchpad.draw(sb, 1);
+		touchpad.draw(sb, 0.5f);
 		bt.draw(sb, 1);
+		bt2.draw(sb, 1);
 	}
 
 	/**

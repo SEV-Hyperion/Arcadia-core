@@ -208,6 +208,11 @@ public class AbstractLevel extends Screen {
 
 	@Override
 	public void resize(int width, int height) {
+		
+		/*
+		 * TODO Make it resize properly the section of screen dedicated to events.
+		 * Currently, the textures scale but the one where one should pressed not. 
+		 */
 		camera.resize();
 		// my guesses
 		camera.updateViewport();
@@ -231,9 +236,5 @@ public class AbstractLevel extends Screen {
 	public void resume() {
 		gameLoopSound.loop();
 	}
-
-//	public static EntityManager getEntityManager() {
-//		return entityManager;
-//	}
 
 }

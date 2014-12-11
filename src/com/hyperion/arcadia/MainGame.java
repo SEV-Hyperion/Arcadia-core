@@ -3,7 +3,7 @@ package com.hyperion.arcadia;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.hyperion.arcadia.screen.AbstractLevel;
+import com.hyperion.arcadia.screen.MainMenuScreen;
 import com.hyperion.arcadia.screen.ScreenManager;
 
 public class MainGame implements ApplicationListener {
@@ -52,10 +52,10 @@ public class MainGame implements ApplicationListener {
 
 		batch = new SpriteBatch();
 		// ScreenManager.setScreen(new GameScreen());
-		ScreenManager.setScreen(new AbstractLevel("level_1_1"));// comenzamos
+//		ScreenManager.setScreen(new AbstractLevel("level_1_1"));// comenzamos
 																// por la
 																// primera
-		// ScreenManager.setScreen(new MainMenuScreen());// comenzamos por el
+		 ScreenManager.setScreen(new MainMenuScreen());// comenzamos por el
 		// menu principal
 
 	}

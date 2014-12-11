@@ -94,6 +94,7 @@ public class EntityManager extends Stage {
 	 * chocar y llama al GameOver si es necesario.
 	 */
 	private void checkCollisions() {
+		// TODO this should go to some game-logic controlling class
 		for (Enemy e : getEnemies()) {
 			for (Projectile m : getProjectiles()) {
 				if (e.getBounds().overlaps(m.getBounds())) {
@@ -106,7 +107,8 @@ public class EntityManager extends Stage {
 
 					/*
 					 * TODO Currently, this doesn't allow the enemies to have
-					 * "life". TODO Currently, this doesn't allow the
+					 * "life".
+					 * TODO Currently, this doesn't allow the
 					 * projectiles to have "life" nor "pierce".
 					 */
 					getActors().removeValue(e, false);
