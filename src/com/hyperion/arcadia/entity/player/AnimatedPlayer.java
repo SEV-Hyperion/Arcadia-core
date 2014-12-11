@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -55,7 +57,7 @@ public class AnimatedPlayer extends Entity {
 	/**
 	 * Tiempo de recarga, en milisegundos
 	 */
-	private static int RELOAD_TIME = 2000;
+	private static int RELOAD_TIME = 1000;
 
 	// animation frames data
 	float frameDuration = 0.500f;// original 0,025f
@@ -125,6 +127,16 @@ public class AnimatedPlayer extends Entity {
 		bt.setPosition(250, 50);
 		bt.setStyle(bs);
 		bt.setSize(66f, 32f);
+		bt.addListener(new EventListener() {
+			
+			@Override
+			public boolean handle(Event arg0) {
+				if (bt.isPressed()){
+					disparoSecundario();
+				}
+				return true;
+			}
+		});
 
 		// second button
 		// TODO remove duplicities here
@@ -135,6 +147,16 @@ public class AnimatedPlayer extends Entity {
 		bt2.setPosition(350, 50);
 		bt2.setStyle(bs2);
 		bt2.setSize(39f, 29f);
+		bt2.addListener(new EventListener() {
+			
+			@Override
+			public boolean handle(Event arg0) {
+				if (bt2.isPressed()){
+					disparoPrincipal();
+				}
+				return true;
+			}
+		});
 
 		EntityManager.em.addActor(touchpad);
 		EntityManager.em.addActor(bt);
@@ -143,7 +165,7 @@ public class AnimatedPlayer extends Entity {
 	}
 
 	// reload support
-	boolean reloading = false;
+//	boolean reloading = false;
 	int timeToReload = 0;
 	long initialTime = 0;
 
@@ -169,34 +191,14 @@ public class AnimatedPlayer extends Entity {
 			currentFrame = playerUpAnimation.getKeyFrame(stateTime, true);
 		}
 
-		if (reloading) {
-			if (System.currentTimeMillis() < (initialTime + timeToReload)) {
-				return;
-			} else {
-				reloading = false;
-				currentMagazine = MAGAZINE_SIZE;
-				return;
-			}
-		}
-
 		// TODO replace by events for respecting buttons
 		setProyectileDireccion();
 
-		if (Gdx.input.isKeyPressed(Keys.SPACE) || bt2.isPressed()) {
-			// disparo principal.
-			// lose ammo on fire.
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
 			disparoPrincipal();
 
-		} else if (Gdx.input.isKeyPressed(Keys.A) || bt.isPressed()) {
-			// TODO rework touch to "disparo secundario".
-			// lose ammo on fire.
+		} else if (Gdx.input.isKeyPressed(Keys.A)) {
 			disparoSecundario();
-		} else if (Gdx.input.isKeyPressed(Keys.R)) {
-			// manual reload
-			timeToReload = (RELOAD_TIME / MAGAZINE_SIZE) * currentMagazine;
-			initialTime = System.currentTimeMillis();
-
-			reloading = true;
 		}
 	}
 
@@ -226,7 +228,7 @@ public class AnimatedPlayer extends Entity {
 	}
 
 	private void disparoPrincipal() {
-		if (System.currentTimeMillis() - lastFire >= 500 && currentMagazine > 0) {
+		if (System.currentTimeMillis() - lastFire >= 200 && currentMagazine > 0) {
 			EntityManager.em.addEntity(new Missile(new Vector2(pos.x
 					+ getWidth() / 4, pos.y), direccionProyectil));
 			lastFire = System.currentTimeMillis();
@@ -242,7 +244,7 @@ public class AnimatedPlayer extends Entity {
 
 	private void disparoSecundario() {
 
-		if (System.currentTimeMillis() - lastFire >= 500 && currentMagazine > 0) {
+		if (System.currentTimeMillis() - lastFire >= 200 && currentMagazine > 0) {
 			System.out.println("Bola fuego lanzada");// TODO remove println
 			EntityManager.em.addEntity(new FireBall(new Vector2(pos.x
 					+ getWidth() / 4, pos.y), direccionProyectil));

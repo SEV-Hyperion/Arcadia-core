@@ -1,23 +1,19 @@
 package com.hyperion.arcadia.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hyperion.arcadia.MainGame;
@@ -31,6 +27,7 @@ public class MainMenuScreen extends Screen {
 	private EntityManager entityManager;
 	private Sprite mapSprite;
 	private TextButton textButton;
+	private Music music;
 
 	@Override
 	public void create() {
@@ -46,10 +43,11 @@ public class MainMenuScreen extends Screen {
 		entityManager = new EntityManager(vp, MainGame.getBatch());
 		entityManager.setCamera(camera);
 		addUI();
-
-		gameLoopSound = Gdx.audio.newSound(Gdx.files
-				.internal("sounds/gameloopsound.mp3"));
-		gameLoopSound.loop();
+		music = Gdx.audio.newMusic(Gdx.files.internal("sounds/l2outro.ogg"));
+		music.play();
+//		gameLoopSound = Gdx.audio.newSound(Gdx.files
+//				.internal("sounds/gameloopsound.mp3"));
+//		gameLoopSound.loop();
 
 		TextureRegion region = TextureManager.instance.atlas.findRegion("map");
 		mapSprite = new Sprite(region);
@@ -141,20 +139,23 @@ public class MainMenuScreen extends Screen {
 
 	@Override
 	public void dispose() {
-		gameLoopSound.dispose();
+//		gameLoopSound.dispose();
+		music.dispose();
 		this.camera = null;
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		gameLoopSound.stop();
+//		gameLoopSound.stop();
+		music.pause();
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		gameLoopSound.loop();
+//		gameLoopSound.loop();
+		music.play();
 	}
 
 }
