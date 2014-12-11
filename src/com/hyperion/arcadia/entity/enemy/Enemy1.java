@@ -8,7 +8,7 @@ public class Enemy1 extends Enemy {
 	public Enemy1(Vector2 pos, Vector2 direction) {
 
 		super(pos, direction, path);
-		speed = 5;
+		speed = 2;
 
 	}
 

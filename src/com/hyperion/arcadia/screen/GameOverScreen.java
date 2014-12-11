@@ -35,22 +35,30 @@ public class GameOverScreen extends Screen {
 	public void create() {
 		camera = new OrthoCamera();
 		camera.resize();
+		
+		/*
+		 * TODO we need to add some buttons. NEXT, REPLAY, MAIN_MENU
+		 */
 
 	}
 
 	@Override
 	public void update() {
 
+		/*
+		 * TODO change level with some more logic. If dead, don't let go to NEXT, etc.
+		 */
 		camera.update();
 
 		if (Gdx.input.isKeyPressed(Keys.R)) {
 			ScreenManager.setScreen(new AbstractLevel("level_1_1"));
 		}
-		else if(Gdx.input.isKeyPressed(Keys.N)){
+		else if(Gdx.input.isKeyPressed(Keys.N)||  Gdx.input.justTouched()){
 			if(nextLevel!="" && !nextLevel.isEmpty())
 				ScreenManager.setScreen(new AbstractLevel(nextLevel));
 			else{
-				//de momento nada
+				// Back to main menu.
+				ScreenManager.setScreen(new MainMenuScreen());
 			}
 		}
 	}

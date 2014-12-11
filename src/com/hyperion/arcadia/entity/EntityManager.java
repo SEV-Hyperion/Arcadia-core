@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hyperion.arcadia.MainGame;
 import com.hyperion.arcadia.camera.OrthoCamera;
 import com.hyperion.arcadia.entity.enemy.Enemy;
 import com.hyperion.arcadia.entity.gui.LivesDisplay;
@@ -84,7 +85,13 @@ public class EntityManager extends Stage {
 			camera.update();
 			// }
 		}
-		// draw();
+//		 draw();
+	}
+	@Override
+	public void draw() {
+		
+		super.draw();
+		render(MainGame.getBatch());
 	}
 
 	/**
@@ -94,7 +101,9 @@ public class EntityManager extends Stage {
 	 * chocar y llama al GameOver si es necesario.
 	 */
 	private void checkCollisions() {
-		// TODO this should go to some game-logic controlling class
+		// TODO this should go to some game-logic controlling class.
+		// Why? Because there aren't going to be always Enemy and Projectile on Screen. Example: the MainMenuScreen.
+		// Anyway, it works as is now.
 		for (Enemy e : getEnemies()) {
 			for (Projectile m : getProjectiles()) {
 				if (e.getBounds().overlaps(m.getBounds())) {
@@ -163,6 +172,9 @@ public class EntityManager extends Stage {
 		}
 	}
 
+	/**
+	 * Busca el LivesDisplay actual y le reduce una vida.
+	 */
 	private void reduceLives() {
 		for (Entity e : getEntities()) {
 			if (e instanceof LivesDisplay) {

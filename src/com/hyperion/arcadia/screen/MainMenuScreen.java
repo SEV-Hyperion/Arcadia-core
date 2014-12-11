@@ -27,12 +27,9 @@ import com.hyperion.arcadia.entity.EntityManager;
 
 public class MainMenuScreen extends Screen {
 	private OrthoCamera camera;
-	private OrthographicCamera cameraGUI;
 	public Sound gameLoopSound;
-	private Sprite sprite;
 	private EntityManager entityManager;
 	private Sprite mapSprite;
-//	Button bt;
 	private TextButton textButton;
 
 	@Override
@@ -70,42 +67,13 @@ public class MainMenuScreen extends Screen {
 
 	}
 
+	/**
+	 * Creates and adds the UI elements for the Main Screen. Curretnly only a
+	 * Button.
+	 */
 	private void addUI() {
 		// TODO crear botones
 		// TODO reeditar parametros
-//		bt = new Button();
-//		bt.setColor(Color.OLIVE);
-//		Skin btSkin = new Skin();
-//		String up = "up";
-//		String down = "down";
-//		btSkin.add(up, TextureManager.instance.atlas.findRegion("badlogic")
-//				.getTexture());
-//		btSkin.add(down, TextureManager.instance.atlas.findRegion("badlogic")
-//				.getTexture());
-//		ButtonStyle bs = new ButtonStyle(btSkin.getDrawable(up),
-//				btSkin.getDrawable(down), btSkin.getDrawable(up));
-//		bt.setPosition(250, 50);
-//		// bt.setSkin(btSkin);
-//		bt.setStyle(bs);
-//		bt.setSize(150f, 150f);
-//
-//		bt.addListener(new EventListener() {
-//
-//			@Override
-//			public boolean handle(Event event) {
-//				// TODO Auto-generated method stub
-//				if (bt.isPressed() || bt.isChecked()) {
-//					System.out.println("boton pulsado");
-//					ScreenManager.setScreen(new AbstractLevel("level_1_1"));
-//				}
-//				return true;
-//			}
-//		});
-//
-//		entityManager.addActor(bt);
-//
-//		Gdx.input.setInputProcessor(EntityManager.em);
-
 		BitmapFont font = new BitmapFont();
 		Skin skin = new Skin();
 		TextureAtlas atlas = new TextureAtlas();
@@ -122,7 +90,7 @@ public class MainMenuScreen extends Screen {
 		textButton.setSize(400, 200);
 		textButton.setCenterPosition(MainGame.VIEWPORT_GUI_HEIGHT / 2,
 				MainGame.VIEWPORT_GUI_WIDTH / 2);
-		
+
 		textButton.addListener(new EventListener() {
 
 			@Override
@@ -156,7 +124,7 @@ public class MainMenuScreen extends Screen {
 		sb.enableBlending(); // Enable blending in the game screen
 		sb.begin();
 		mapSprite.draw(sb);
-//		bt.draw(sb, 1);
+		// bt.draw(sb, 1);
 		textButton.draw(sb, 1);
 		entityManager.render(sb);
 		sb.end();

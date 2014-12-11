@@ -8,6 +8,11 @@ import com.hyperion.arcadia.MainGame;
 import com.hyperion.arcadia.camera.OrthoCamera;
 import com.hyperion.arcadia.entity.EntityManager;
 
+/**
+ * This was planned to be a generic screen and ended being nothing. AbstractLevel took over.
+ * @author Daniel
+ *
+ */
 public class GameScreen extends Screen {
 
 	private OrthoCamera camera;
