@@ -1,6 +1,9 @@
 package com.hyperion.arcadia.entity.projectiles;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 
 public class FireBall extends Projectile {
 	private static String path = "fireball.png";
@@ -16,6 +19,7 @@ public class FireBall extends Projectile {
 		super(pos, direccion);
 		animation = loadAnimation(path, width, height, frameDuration);
 		currentFrame = animation.getKeyFrame(0, true);
+		throwProjectile = Gdx.audio.newSound(Gdx.files.internal("sounds/gun_fire.ogg"));
 	}
 
 }

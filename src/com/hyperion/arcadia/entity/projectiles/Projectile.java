@@ -10,7 +10,8 @@ import com.hyperion.arcadia.entity.Entity;
 public class Projectile extends Entity {
 
 	protected Animation animation;
-	private Sound hit;
+	protected Sound hit;
+	protected Sound throwProjectile;
 
 	public Projectile(Vector2 pos, Vector2 direction) {
 		super(pos, direction);

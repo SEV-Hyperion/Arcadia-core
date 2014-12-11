@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.utils.Array;
+import com.hyperion.arcadia.MainGame;
 import com.hyperion.arcadia.TextureManager;
 import com.hyperion.arcadia.camera.OrthoCamera;
 import com.hyperion.arcadia.entity.Entity;
@@ -128,10 +129,10 @@ public class AnimatedPlayer extends Entity {
 		bt.setStyle(bs);
 		bt.setSize(66f, 32f);
 		bt.addListener(new EventListener() {
-			
+
 			@Override
 			public boolean handle(Event arg0) {
-				if (bt.isPressed()){
+				if (bt.isPressed()) {
 					disparoSecundario();
 				}
 				return true;
@@ -148,10 +149,10 @@ public class AnimatedPlayer extends Entity {
 		bt2.setStyle(bs2);
 		bt2.setSize(39f, 29f);
 		bt2.addListener(new EventListener() {
-			
+
 			@Override
 			public boolean handle(Event arg0) {
-				if (bt2.isPressed()){
+				if (bt2.isPressed()) {
 					disparoPrincipal();
 				}
 				return true;
@@ -165,7 +166,7 @@ public class AnimatedPlayer extends Entity {
 	}
 
 	// reload support
-//	boolean reloading = false;
+	// boolean reloading = false;
 	int timeToReload = 0;
 	long initialTime = 0;
 
@@ -209,22 +210,22 @@ public class AnimatedPlayer extends Entity {
 
 		// TODO we desperately need a way to lock the player inside the map.
 
-		// float x = getPosition().x;
-		float newX = touchpad.getKnobPercentX() * CHARACTER_SPEED;
-		// if (x <= 0) {
-		// newX = 1;
-		// } else if (x >= MainGame.VIEWPORT_GUI_WIDTH) {
-		// newX = - 1;
-		// }
+		float x = getPosition().x;
+		float newX = touchpad.getKnobPercentX();
+		if (x <= 0) {
+			newX = 1;
+		} else if (x > (MainGame.VIEWPORT_GUI_HEIGHT -25)) {
+			newX = -1;
+		}
 
-		// float y = getPosition().y;
-		float newY = touchpad.getKnobPercentY() * CHARACTER_SPEED;
-		// if (y <= 0){
-		// newY = 1;
-		// }else if (y >= MainGame.VIEWPORT_GUI_HEIGHT) {
-		// newY = -1;
-		// }
-		setDirection(newX, newY);
+		float y = getPosition().y;
+		float newY = touchpad.getKnobPercentY();
+		if (y <= 0) {
+			newY = 1;
+		} else if (y > (MainGame.VIEWPORT_GUI_WIDTH -25)) {
+			newY = -1;
+		}
+		setDirection(newX * CHARACTER_SPEED, newY * CHARACTER_SPEED);
 	}
 
 	private void disparoPrincipal() {
